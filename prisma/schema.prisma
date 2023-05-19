@@ -27,6 +27,8 @@ model Book {
   authorId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  users UserOnBooks[]
 }
 
 enum Role {
@@ -39,6 +41,7 @@ model User {
   email String @unique
   role Role @default(USER)
   password Password?
+  books UserOnBooks[]
 }
 
 model Password {
@@ -47,3 +50,12 @@ model Password {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 }
+
+model UserOnBooks {
+  book Book @relation(fields: [bookId], references: [id])
+  bookId String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+
+  @@id([bookId, userId])
+}  
